@@ -32,16 +32,16 @@
 
 ;; Relations between units (conversion factors).
 
-(defvar thz-to-cm-1 33.356
+(defconst thz-to-cm-1 33.356
   "THz to cm^-1 conversion factor."
   )
-(defvar thz-to-ev 4.1357e-3
+(defconst thz-to-ev 4.1357e-3
   "THz to eV conversion factor."
   )
-(defvar ev-to-microns 1.2398
-  "eV to micrometer conversion factor."
-  ) ; Careful: this relation is inverse.
-(defvar ev-to-k 11605
+(defconst ev-to-microns 1.2398
+  "eV to micrometer conversion factor (inversely proportional relationship)."
+  )
+(defconst ev-to-k 11605
   "eV to Kelvin conversion factor."
   )
 
@@ -50,7 +50,11 @@
 
 (defun thz-to-cm-1 (thz-input)
   "Takes data in THz and converts it to cm-1."
-  (* thz-to-cm-1 thz-input)
+  (interactive (list (read-number "Frequency (THz): ")))
+  (let ((result (* thz-to-cm-1 thz-input)))
+    (when (called-interactively-p 'interactive)
+      (message "%g cm^-1" result))
+    result)
   )
 (defun thz-to-ev (thz-input)
   "Takes data in THz and converts it to eV."
@@ -69,6 +73,4 @@
   "Takes data in eV and converts it to fs."
   )
 
-; For testing:
-;(thz-to-cm-1 10)
-;(thz-to-ev 790)
+(provide 'spectral)
